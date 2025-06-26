@@ -84,7 +84,7 @@ res.body: payload parseado (en este caso un array de inmuebles).
 
 
 
-> ***pm install -D owasp-dependency-check***
+> ***npm install -D owasp-dependency-check***
 
 The command installs the `owasp-dependency-check` package as a development dependency (`-D` flag).
 
@@ -99,3 +99,5 @@ You can specify any arguments that the OWASP dependency-check-cli provides. For 
 >   ...
 >  "owasp": "owasp-dependency-check --project \"YOUR PROJECT NAME\" -f HTML -f JSON"
 > }
+
+- -f HTML -f JSON are options of OWASP dependecy
