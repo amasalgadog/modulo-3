@@ -35,13 +35,23 @@ jobs:
       - name: instalar dependencias
         run: npm ci
 
-      - name: actualizar dependency-check
-        run: dependency-check --updateonly --nvdApiKey 4c4befcc-91c9-4409-8029-a6fe97f87901
-        shell: bash
+      - name: depcheck
+        uses: dependency-check/Dependency-Check_Action@main
+        id: depcheck
+        with:
+          project: "Modulo-3"
+          path: "."
+          format: "HTML"
+          out: "reporte"
+          args: >
+            --failOnCVSS 7
+            --enableRetired
 
-      - name: detección de vulnerabilidades
-        run: dependency-check --project "Modulo-3" --scan "." --format "HTML" --out "./.gitignore"
-        shell: bash
+      - name: Upload Test results
+        uses: actions/upload-artifact@master
+        with:
+          name: depcheck reporte
+          path: ${{github.workspace}}/reporte
       
       - name: corregir permisos de jest
         run: chmod +x ./node_modules/.bin/jest
