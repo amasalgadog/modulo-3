@@ -36,7 +36,7 @@ jobs:
         run: npm ci
 
       - name: actualizar dependency-check
-        run: dependency-check.sh --updateonly --nvdApiKey 4c4befcc-91c9-4409-8029-a6fe97f87901
+        run: dependency-check --updateonly --nvdApiKey 4c4befcc-91c9-4409-8029-a6fe97f87901
         shell: bash
 
       - name: detección de vulnerabilidades
