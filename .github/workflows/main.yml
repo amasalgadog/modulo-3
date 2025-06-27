@@ -8,12 +8,12 @@ on:
 
 jobs:
   test:
-    name: Simulación de pruebas unitarias + capa de seguridad Dependency-check en Node.js ${{ matrix.node }}
+    name: simulación de pruebas unitarias en Node.js ${{ matrix.node }}
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node: [18.x]
+        node: [18.x, 20.x, 22.x]
 
     steps:
       - name: checkout del código
@@ -34,24 +34,6 @@ jobs:
       
       - name: instalar dependencias
         run: npm ci
-
-      - name: depcheck
-        uses: dependency-check/Dependency-Check_Action@main
-        id: depcheck
-        with:
-          project: "Modulo-3"
-          path: "."
-          format: "HTML"
-          out: "reporte"
-          args: >
-            --failOnCVSS 7
-            --enableRetired
-
-      - name: Upload Test results
-        uses: actions/upload-artifact@master
-        with:
-          name: depcheck reporte
-          path: ${{github.workspace}}/reporte
       
       - name: corregir permisos de jest
         run: chmod +x ./node_modules/.bin/jest
@@ -66,6 +48,28 @@ jobs:
       - name: reportar error
         if: failure()
         run: echo "Falla detectada en los tests para Node ${{ matrix.node }}"
+  
+  seguridad:
+    name: detección de vulnerabilidades con Dependency-Check
+    runs-on: ubuntu-latest
 
+    steps:
+      - name: depcheck
+        uses: dependency-check/Dependency-Check_Action@main
+        id: depcheck
+        with:
+          project: "Modulo-3"
+          path: "."
+          format: "HTML"
+          out: "reporte"
+          args: >
+            --failOnCVSS 7
+            --enableRetired
+
+  despliegue:
+    runs-on: ubuntu-latest
+    needs: seguridad
+
+    steps:
       - name: despliegue
         run: echo "Despligue"
