@@ -9,23 +9,15 @@ const productos = [
     {id: 5, nombre: 'Bolsas de té verde, 200 u', precio: 3500, fecha_vencimiento: '2025-05-20'},
 ];
 
-const clientes = [
-    {id: 1, nombre: 'Juan Pérez', email: 'juan.perez@gmail.com', telefono: '123456789'},
-    {id: 2, nombre: 'María López', email: 'maria.lopez@gmail.com', telefono: '987654321'},
-    {id: 3, nombre: 'Carlos García', email: 'carlos.garcia@gmail.com', telefono: '456789123'},
-];
+const mensaje = "¡Hola, Módulo 3!";
 
-app.get('/api/clientes', (req, res) => {
-    res.send(clientes);
+app.get('/api/productos', (req, res) => {
+    res.json(productos);
+    res.send(mensaje);
 });
 
 app.listen(3000, () => {
     console.log('Modulo-3 corriendo en http://localhost:3000');
 });
-
-app.get('/api/productos', (req, res) => {
-    res.json(productos);
-});
-
 
 module.exports = app;
