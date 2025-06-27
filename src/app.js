@@ -16,8 +16,19 @@ app.get('/api/productos', (req, res) => {
     res.send(mensaje);
 });
 
-app.listen(3000, () => {
-    console.log('Modulo-3 corriendo en http://localhost:3000');
-});
+/*This code block checks whether the current file is being run directly by Node.js or being imported as a module into another file. 
+The condition `require.main === module` is true only when you execute this file directly (for example, with `node app.js`). 
+If that's the case, the code inside the block runs: it starts the Express server by calling `app.listen(3000, ...)`, 
+which makes your application listen for HTTP requests on port 3000. The callback function logs a message to the console indicating that the server is running.
+
+This pattern is useful for separating the app's definition from its execution. 
+It allows you to import the Express app into other files (such as test files) without automatically starting the server, 
+which is important for testing and modularity.*/44
+
+if (require.main === module) {
+    app.listen(3000, () => {
+        console.log('Modulo-3 corriendo en http://localhost:3000');
+    });
+}
 
 module.exports = app;
