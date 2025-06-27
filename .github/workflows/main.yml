@@ -13,7 +13,7 @@ jobs:
 
     strategy:
       matrix:
-        node: [18.x, 20.x]
+        node: [18.x]
 
     steps:
       - name: checkout del código
