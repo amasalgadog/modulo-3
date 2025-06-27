@@ -36,11 +36,12 @@ jobs:
         run: npm ci
 
       - name: actualizar dependency-check
-        run: dependency-check.sh --updateonly --nvdApiKey ${{ secrets.NVD_API_KEY }}
+        run: dependency-check.sh --updateonly --nvdApiKey 4c4befcc-91c9-4409-8029-a6fe97f87901
         shell: bash
 
       - name: detección de vulnerabilidades
-        run: dependency-check.sh --project "Modulo-3" --scan "." --format "HTML" --out "./reporte"
+        run: dependency-check --project "Modulo-3" --scan "." --format "HTML" --out "./.gitignore"
+        shell: bash
       
       - name: corregir permisos de jest
         run: chmod +x ./node_modules/.bin/jest
@@ -58,5 +59,3 @@ jobs:
 
       - name: despliegue
         run: echo "Despligue"
-  
-  
