@@ -1,0 +1,62 @@
+name: Modulo-3 CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Simulación de pruebas unitarias + capa de seguridad Dependency-check en Node.js ${{ matrix.node }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node: [18.x, 20.x]
+
+    steps:
+      - name: checkout del código
+        uses: actions/checkout@v3
+
+      - name: configurar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: cachear dependencias npm
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+      
+      - name: instalar dependencias
+        run: npm ci
+
+      - name: actualizar dependency-check
+        run: dependency-check.sh --updateonly --nvdApiKey ${{ secrets.NVD_API_KEY }}
+        shell: bash
+
+      - name: detección de vulnerabilidades
+        run: dependency-check.sh --project "Modulo-3" --scan "." --format "HTML" --out "./reporte"
+      
+      - name: corregir permisos de jest
+        run: chmod +x ./node_modules/.bin/jest
+
+      - name: ejecutar pruebas con Jest
+        run: npm test
+      
+      - name: reportar éxito
+        if: success()
+        run: echo "API funcional en Node ${{ matrix.node }}"
+
+      - name: reportar error
+        if: failure()
+        run: echo "Falla detectada en los tests para Node ${{ matrix.node }}"
+
+      - name: despliegue
+        run: echo "Despligue"
+  
+  
